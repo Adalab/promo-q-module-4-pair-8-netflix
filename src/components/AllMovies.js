@@ -1,6 +1,6 @@
 import React from 'react';
 import MoviesList from './MoviesList';
-import '../stylesheets/AppMovies.scss';
+import '../styles/AppMovies.scss';
 
 const AllMovies = props => {
   const handleOptions = ev => {
