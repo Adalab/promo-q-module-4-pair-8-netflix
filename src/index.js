@@ -20,5 +20,18 @@ server.get("/movies", (req, resp) => {
   })
 })
 
+server.set('view engine', 'ejs');
+
+server.get('/movie/:movieId', (req, res) => {
+  console.log(req.params.movieId);
+  const foundMovie = listMovies.find((oneMovie) => parseInt(oneMovie.id) === parseInt(req.params.movieId));
+  console.log(foundMovie);
+
+  res.render('movie', foundMovie);
+})
+
 const staticServer = ('./src/public-react');
 server.use(express.static(staticServer));
+
+const staticCSSServer = ('./src/public-css');
+server.use(express.static(staticCSSServer));
