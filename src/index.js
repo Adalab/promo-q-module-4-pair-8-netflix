@@ -30,8 +30,6 @@ server.get("/movies", (req, resp) => {
 
 server.set('view engine', 'ejs');
 
-
-
 server.get('/movie/:movieId', (req, res) => {
   console.log(req.params.movieId);
   const query = db.prepare(
@@ -45,6 +43,29 @@ server.get('/movie/:movieId', (req, res) => {
   res.render('movie', foundMovie);
 })
 
+//Login usuarias
+server.post('/login', (req, res) => {
+  console.log(req.body);
+  const queryLogin = db.prepare(
+    `SELECT * FROM users`
+  )
+  const allUsers = queryLogin.all();
+  res.json({
+    users: allUsers,
+    success: true
+  })
+})
+
+//Signup usuarias
+server.post('/signup', (req, res) => {
+  const querySignup = db.prepare(
+    `INSERT INTO users (email, password) VALUES (?, ?)`
+  )
+  console.log(req.body);
+  const newUser = querySignup.run(req.body.email, req.body.password)
+  console.log(newUser);
+  res.json(newUser);
+})
 
 
 const staticServer = ('./src/public-react');
