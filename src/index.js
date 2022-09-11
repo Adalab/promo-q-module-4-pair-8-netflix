@@ -16,17 +16,18 @@ server.listen(serverPort, () => {
 const db = new Database('./src/db/database.db', { verbose: console.log});
 
 server.get("/movies", (req, resp) => {
-  const query = db.prepare(
+ const query = db.prepare(
     `SELECT * 
-    FROM movies` 
-  )
-  const allMovies = query.all();
-  console.log(allMovies);
-  resp.json({
+    FROM movies
+    `)
+    const allMovies = query.all();
+      console.log(allMovies);
+        resp.json({
     movies: allMovies,
-    success: true
-  });
+    success: true})
 })
+
+
 
 server.set('view engine', 'ejs');
 
@@ -70,6 +71,9 @@ server.post('/signup', (req, res) => {
 
 const staticServer = ('./src/public-react');
 server.use(express.static(staticServer));
+
+const staticServerImg = ('./src/public-movie-images');
+server.use(express.static(staticServerImg));
 
 const staticCSSServer = ('./src/public-css');
 server.use(express.static(staticCSSServer));
