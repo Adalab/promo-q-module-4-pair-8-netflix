@@ -33,5 +33,8 @@ server.get('/movie/:movieId', (req, res) => {
 const staticServer = ('./src/public-react');
 server.use(express.static(staticServer));
 
+const staticServerImg = ('./src/public-movie-images');
+server.use(express.static(staticServerImg));
+
 const staticCSSServer = ('./src/public-css');
 server.use(express.static(staticCSSServer));
