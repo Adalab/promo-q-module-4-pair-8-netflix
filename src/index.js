@@ -16,16 +16,22 @@ server.listen(serverPort, () => {
 const db = new Database('./src/db/database.db', { verbose: console.log});
 
 server.get("/movies", (req, resp) => {
-  const query = db.prepare(
-    `SELECT * 
-    FROM movies` 
-  )
-  const allMovies = query.all();
-  console.log(allMovies);
+  
+  console.log('Ver las query params', req.query);
+  let response = [];
+  if (req.query.gender === '') {
+    const query = db.prepare(`SELECT * FROM movies`);
+    response = query.all();
+  } else {
+    const query = db.prepare(
+      `SELECT * FROM movies WHERE gender = ?`
+    );
+    response = query.all(req.query.gender);
+  }
   resp.json({
-    movies: allMovies,
-    success: true
-  });
+    success: true,
+    movies: response,
+  })
 })
 
 server.set('view engine', 'ejs');
@@ -58,13 +64,22 @@ server.post('/login', (req, res) => {
 
 //Signup usuarias
 server.post('/signup', (req, res) => {
-  const querySignup = db.prepare(
+  const query = db.prepare(`SELECT * FROM users WHERE email = ?`)
+  const check = query.get(req.body.email);
+  if(check) {
+    res.json({
+      success: false,
+      messagge: "Usuaria ya existente"
+    })
+  } else {
+    const querySignup = db.prepare(
     `INSERT INTO users (email, password) VALUES (?, ?)`
   )
   console.log(req.body);
   const newUser = querySignup.run(req.body.email, req.body.password)
   console.log(newUser);
   res.json(newUser);
+  }
 })
 
 
