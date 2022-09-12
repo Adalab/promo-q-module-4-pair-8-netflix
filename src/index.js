@@ -69,7 +69,7 @@ server.post('/signup', (req, res) => {
   if(check) {
     res.json({
       success: false,
-      messagge: "Usuaria ya existente"
+      message: "Usuaria ya existente"
     })
   } else {
     const querySignup = db.prepare(
@@ -88,3 +88,6 @@ server.use(express.static(staticServer));
 
 const staticCSSServer = ('./src/public-css');
 server.use(express.static(staticCSSServer));
+
+const staticServerImages = ('./src/public-movie-images');
+server.use(express.static(staticServerImages));
